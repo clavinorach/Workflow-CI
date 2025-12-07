@@ -45,9 +45,13 @@ def load_processed_data(data_dir):
 def main():
     args = parse_args()
     
+    # Unset MLFLOW_RUN_ID to avoid conflicts with parent mlflow run command
+    if 'MLFLOW_RUN_ID' in os.environ:
+        del os.environ['MLFLOW_RUN_ID']
+    
     # Basic Criteria: Localhost & Autolog
     # mlflow.set_tracking_uri("http://127.0.0.1:5000")
-    # mlflow.set_experiment("sklearn_basic_autolog")
+    mlflow.set_experiment("sklearn_basic_autolog")
     
     # Enable Autolog (Logs params, metrics, model automatically)
     # This satisfies the requirement to remove manual logs
