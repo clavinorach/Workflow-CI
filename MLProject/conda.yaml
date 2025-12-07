@@ -11,4 +11,4 @@ dependencies:
       - matplotlib
       - joblib
       - optuna==4.5.0
-      - dagshub==0.6.3
+      - dagshub==0.3.32
