@@ -46,7 +46,7 @@ def main():
     args = parse_args()
     
     # Basic Criteria: Localhost & Autolog
-    mlflow.set_tracking_uri("http://127.0.0.1:5000")
+    # mlflow.set_tracking_uri("http://127.0.0.1:5000")
     mlflow.set_experiment("sklearn_basic_autolog")
     
     # Enable Autolog (Logs params, metrics, model automatically)
