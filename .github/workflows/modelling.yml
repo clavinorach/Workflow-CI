@@ -37,6 +37,8 @@ jobs:
           pip install mlflow scikit-learn numpy pandas matplotlib joblib dagshub optuna
 
       - name: Run MLflow Project
+        env:
+          MLFLOW_TRACKING_URI: file:./mlruns
         run: |
           mlflow run MLProject --env-manager=local -e train -P experiment_name="${EXP_NAME}"
 
@@ -73,7 +75,7 @@ jobs:
 
       - name: Build Docker Image
         env:
-          MLFLOW_TRACKING_URI: file:MLProject/mlruns
+          MLFLOW_TRACKING_URI: file:./mlruns
         run: |
           mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "${IMAGE_BASE}:${{ github.run_number }}"
           docker tag "${IMAGE_BASE}:${{ github.run_number }}" "${IMAGE_BASE}:latest"
