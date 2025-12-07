@@ -37,10 +37,9 @@ jobs:
           pip install mlflow scikit-learn numpy pandas matplotlib joblib dagshub optuna
 
       - name: Run MLflow Project
-        env:
-          MLFLOW_TRACKING_URI: file:./mlruns
         run: |
-          mlflow run MLProject --env-manager=local -e train -P experiment_name="${EXP_NAME}"
+          cd MLProject
+          mlflow run . --env-manager=local -e train -P experiment_name="${EXP_NAME}"
 
       # Read modelling.py
       - name: Get MLflow 'run_id'
@@ -50,6 +49,7 @@ jobs:
           fi
           RUN_ID=$(cat MLProject/artifacts/run_id.txt | tr -d '\n')
           echo "RUN_ID=$RUN_ID" | tee -a "$GITHUB_ENV"
+          echo "Run ID: $RUN_ID"
 
       - name: Upload Evaluation Artifacts
         uses: actions/upload-artifact@v4
@@ -74,8 +74,7 @@ jobs:
           git push
 
       - name: Build Docker Image
-        env:
-          MLFLOW_TRACKING_URI: file:./mlruns
+        working-directory: MLProject
         run: |
           mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "${IMAGE_BASE}:${{ github.run_number }}"
           docker tag "${IMAGE_BASE}:${{ github.run_number }}" "${IMAGE_BASE}:latest"
