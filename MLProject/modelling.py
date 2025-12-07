@@ -71,12 +71,18 @@ def main():
     ])
     
     # Train
-    with mlflow.start_run():
+    with mlflow.start_run() as run:
         mlp.fit(X_train, y_train)
         
         # Evaluate
         score = mlp.score(X_test, y_test)
         print(f"Test Accuracy: {score}")
+        
+        # Save run ID to artifacts directory
+        os.makedirs("artifacts", exist_ok=True)
+        with open("artifacts/run_id.txt", "w") as f:
+            f.write(run.info.run_id)
+        print(f"Run ID saved: {run.info.run_id}")
 
 if __name__ == "__main__":
     main()
