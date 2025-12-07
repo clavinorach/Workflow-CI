@@ -1,12 +1,10 @@
 name: mlp-scikit
 env_manager: local
 
-parameters:
-  data_dir: {type: str, default: "preprocess_dataset"}
-
 entry_points:
   train:
     parameters:
       experiment_name: {type: str, default: "mlp_train_ci"}
+      data_dir: {type: str, default: "preprocess_dataset"}
     command: >
       python modelling.py --data-dir {data_dir}
